@@ -3,11 +3,13 @@ import { ref, reactive } from 'vue'
 import {useRouter} from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from "element-plus"
+import { useStore } from '@/stores'
 interface RuleForm {
   account: string
   password: string
 }
 const router = useRouter();
+const {userInfo} = useStore()
 const form = reactive({
   account: '',
   password: '',
@@ -41,6 +43,7 @@ const onLogin = async (formRef: FormInstance | undefined) => {
         offset: 80,
         duration:1000
       })
+      userInfo.login(true)
       router.push('/home')
     } else {
       console.log(valid, fields)
