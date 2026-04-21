@@ -10,4 +10,15 @@ export const useUserInfoStore = defineStore('userInfo', {
       this.loginState = state
     },
   },
+  persist: {
+    key: 'userInfo',
+    storage: localStorage,
+    serializer: {
+      serialize: (state) => JSON.stringify({
+        userName: state.userName,
+        loginState: state.loginState,
+      }),
+      deserialize: (serializedState) => JSON.parse(serializedState),
+    },
+  },
 })
