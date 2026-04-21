@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import type { FormInstance, FormRules } from "element-plus"
+import type { FormInstance, FormRules } from 'element-plus'
 import { useStore } from '@/stores'
 interface RuleForm {
   account: string
   password: string
 }
-const router = useRouter();
-const {userInfo} = useStore()
+const router = useRouter()
+const { userInfo } = useStore()
 const form = reactive({
-  account: '',
-  password: '',
+  account: 'admin',
+  password: '123456',
 })
 const ruleFormRef = ref<FormInstance>()
 const formRules = reactive<FormRules<RuleForm>>({
@@ -41,10 +41,10 @@ const onLogin = async (formRef: FormInstance | undefined) => {
         plain: true,
         placement: 'top',
         offset: 80,
-        duration:1000
+        duration: 1000,
       })
       userInfo.login(true)
-      router.push('/home')
+      router.push('/')
     } else {
       console.log(valid, fields)
     }
@@ -56,14 +56,19 @@ const onLogin = async (formRef: FormInstance | undefined) => {
   <div class="login-background">
     <div class="login-form">
       <p>登录</p>
-      <el-form class="form-container" ref="ruleFormRef" :model="form" :rules="formRules" label-width="auto">
+      <el-form
+        class="form-container"
+        ref="ruleFormRef"
+        :model="form"
+        :rules="formRules"
+        label-width="auto"
+      >
         <el-form-item label="账号" prop="account">
           <el-input v-model="form.account" placeholder="请输入账号" />
         </el-form-item>
-        <el-form-item label="密码" prop="password"">
+        <el-form-item label="密码" prop="password">
           <el-input v-model="form.password" placeholder="请输入密码" show-password />
         </el-form-item>
-        <!-- 这里就是给登录/注册按钮预留的位置 -->
         <div class="btn-group">
           <el-button type="primary" @click="onLogin(ruleFormRef)">登录</el-button>
           <el-button>注册</el-button>
@@ -79,7 +84,8 @@ const onLogin = async (formRef: FormInstance | undefined) => {
   height: 100%;
   background-color: black;
   background:
-    linear-gradient(to right,
+    linear-gradient(
+      to right,
       #050508 0%,
       rgba(5, 5, 8) 10%,
       rgba(7, 7, 9) 20%,
@@ -87,7 +93,8 @@ const onLogin = async (formRef: FormInstance | undefined) => {
       transparent 72%,
       rgba(7, 7, 9) 80%,
       rgba(5, 5, 8) 90%,
-      #050508 100%),
+      #050508 100%
+    ),
     url('../../assets/images/loginBackground.jpg') no-repeat center center / contain;
   position: relative;
 }
@@ -149,11 +156,8 @@ const onLogin = async (formRef: FormInstance | undefined) => {
   :deep(.el-form-item__label) {
     color: rgba(255, 255, 255, 0.7);
     font-size: 16px;
-    /* 文字大小 */
     font-weight: 500;
-    /* 文字粗细 */
     padding-right: 12px;
-    /* 离输入框的距离 */
   }
 }
 </style>
