@@ -1,28 +1,27 @@
 import { defineStore } from 'pinia'
-export const useUserInfoStore = defineStore('userInfo', {
-  state: () => ({
-    userName: '',
-    loginState: false,
-    permissions:['admin'], //权限集合
-    allRoutes:[],//所有路由集合
-  }),
-  getters: {},
-  actions: {
-    login(state: boolean) {
-      // 未来将在这里调用登录接口，获取用户信息及路由权限等数据
-      this.loginState = state
-      
-    },
-  },
-  persist: {
-    key: 'userInfo',
-    storage: localStorage,
-    serializer: {
-      serialize: (state) => JSON.stringify({
-        userName: state.userName,
-        loginState: state.loginState,
-      }),
-      deserialize: (serializedState) => JSON.parse(serializedState),
-    },
-  },
+import { ref } from 'vue'
+import { mockLogin, mockGetUserInfo } from '@/api/user'
+
+export const useUserInfoStore = defineStore('userInfo', () => {
+  const userName = ref('')
+  const loginState = ref(false)
+  const token = ref(localStorage.getItem('token') ?? '')
+
+  const login = async (account: string, password: string) => {
+    const t = await mockLogin(account, password)
+    const userInfo = await mockGetUserInfo(t)
+    token.value = t
+    userName.value = userInfo.userName
+    loginState.value = true
+    localStorage.setItem('token', t)
+  }
+
+  const logout = () => {
+    token.value = ''
+    loginState.value = false
+    userName.value = ''
+    localStorage.removeItem('token')
+  }
+
+  return { userName, loginState, token, login, logout }
 })
