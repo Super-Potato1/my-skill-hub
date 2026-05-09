@@ -111,6 +111,7 @@ const onFlyoutLeave = () => {
   </nav>
 
   <Teleport to="body">
+    <Transition name="flyout">
     <div
       v-if="props.collapsed && hoveredMenu"
       class="flyout-menu"
@@ -135,6 +136,7 @@ const onFlyoutLeave = () => {
         </template>
       </template>
     </div>
+    </Transition>
   </Teleport>
 </template>
 
@@ -217,6 +219,16 @@ const onFlyoutLeave = () => {
 }
 
 /* flyout submenu (collapsed state) */
+.flyout-enter-active,
+.flyout-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.flyout-enter-from,
+.flyout-leave-to {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
 .flyout-menu {
   position: fixed;
   left: 68px;
