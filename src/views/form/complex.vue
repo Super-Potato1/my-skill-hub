@@ -8,11 +8,19 @@ const formRef = ref<FormInstance>()
 
 const form = reactive({
   // step 1
-  company: '', industry: '', scale: '',
+  company: '',
+  industry: '',
+  scale: '',
   // step 2
-  contact: '', position: '', email: '', phone: '',
+  contact: '',
+  position: '',
+  email: '',
+  phone: '',
   // step 3
-  budget: '', deadline: '', desc: '', priority: 'medium',
+  budget: '',
+  deadline: '',
+  desc: '',
+  priority: 'medium',
 })
 
 const rules = {
@@ -20,7 +28,9 @@ const rules = {
   industry: [{ required: true, message: '请选择行业', trigger: 'change' }],
   contact: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
   email: [{ required: true, type: 'email' as const, message: '邮箱格式不正确', trigger: 'blur' }],
-  phone: [{ required: true, pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }],
+  phone: [
+    { required: true, pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' },
+  ],
   desc: [{ required: true, message: '请填写需求描述', trigger: 'blur' }],
 }
 
@@ -60,7 +70,12 @@ const steps = ['企业信息', '联系方式', '需求详情']
     </div>
     <div class="form-card">
       <div class="steps-bar">
-        <div v-for="(s, i) in steps" :key="i" class="step-item" :class="{ active: i === step, done: i < step }">
+        <div
+          v-for="(s, i) in steps"
+          :key="i"
+          class="step-item"
+          :class="{ active: i === step, done: i < step }"
+        >
           <div class="step-circle">{{ i < step ? '✓' : i + 1 }}</div>
           <div class="step-label">{{ s }}</div>
           <div v-if="i < steps.length - 1" class="step-line" :class="{ done: i < step }"></div>
@@ -78,7 +93,7 @@ const steps = ['企业信息', '联系方式', '需求详情']
             </el-col>
             <el-col :span="12">
               <el-form-item label="所属行业" prop="industry">
-                <el-select v-model="form.industry" placeholder="请选择行业" style="width:100%">
+                <el-select v-model="form.industry" placeholder="请选择行业" style="width: 100%">
                   <el-option label="互联网" value="internet" />
                   <el-option label="金融" value="finance" />
                   <el-option label="教育" value="education" />
@@ -130,7 +145,7 @@ const steps = ['企业信息', '联系方式', '需求详情']
           <el-row :gutter="24">
             <el-col :span="12">
               <el-form-item label="预算范围" prop="budget">
-                <el-select v-model="form.budget" placeholder="请选择预算" style="width:100%">
+                <el-select v-model="form.budget" placeholder="请选择预算" style="width: 100%">
                   <el-option label="10万以下" value="lt10" />
                   <el-option label="10-50万" value="10-50" />
                   <el-option label="50-100万" value="50-100" />
@@ -140,7 +155,13 @@ const steps = ['企业信息', '联系方式', '需求详情']
             </el-col>
             <el-col :span="12">
               <el-form-item label="期望交付" prop="deadline">
-                <el-date-picker v-model="form.deadline" type="date" placeholder="请选择日期" style="width:100%" value-format="YYYY-MM-DD" />
+                <el-date-picker
+                  v-model="form.deadline"
+                  type="date"
+                  placeholder="请选择日期"
+                  style="width: 100%"
+                  value-format="YYYY-MM-DD"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -154,7 +175,14 @@ const steps = ['企业信息', '联系方式', '需求详情']
             </el-col>
             <el-col :span="24">
               <el-form-item label="需求描述" prop="desc">
-                <el-input v-model="form.desc" type="textarea" :rows="4" placeholder="请详细描述您的需求" maxlength="500" show-word-limit />
+                <el-input
+                  v-model="form.desc"
+                  type="textarea"
+                  :rows="4"
+                  placeholder="请详细描述您的需求"
+                  maxlength="500"
+                  show-word-limit
+                />
               </el-form-item>
             </el-col>
           </el-row>
@@ -171,7 +199,7 @@ const steps = ['企业信息', '联系方式', '需求详情']
 </template>
 
 <style scoped lang="scss">
-@import './form-shared';
+@use './form-shared';
 
 .steps-bar {
   display: flex;
@@ -222,8 +250,13 @@ const steps = ['企业信息', '联系方式', '需求详情']
   margin-left: 8px;
   white-space: nowrap;
 
-  .step-item.active & { color: #6366f1; font-weight: 600; }
-  .step-item.done & { color: #1a1a2e; }
+  .step-item.active & {
+    color: #6366f1;
+    font-weight: 600;
+  }
+  .step-item.done & {
+    color: #1a1a2e;
+  }
 }
 
 .step-line {
@@ -233,8 +266,12 @@ const steps = ['企业信息', '联系方式', '需求详情']
   margin: 0 12px;
   transition: background 0.3s;
 
-  &.done { background: #6366f1; }
+  &.done {
+    background: #6366f1;
+  }
 }
 
-.step-form { min-height: 200px; }
+.step-form {
+  min-height: 200px;
+}
 </style>
