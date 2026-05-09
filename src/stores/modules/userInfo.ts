@@ -1,17 +1,19 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { mockLogin, mockGetUserInfo } from '@/api/user'
+import { mockLogin, mockGetUserInfo, type UserProfile } from '@/api/user'
 
 export const useUserInfoStore = defineStore('userInfo', () => {
   const userName = ref('')
   const loginState = ref(false)
   const token = ref(localStorage.getItem('token') ?? '')
+  const profile = ref<UserProfile | null>(null)
 
   const login = async (account: string, password: string) => {
     const t = await mockLogin(account, password)
-    const userInfo = await mockGetUserInfo(t)
+    const info = await mockGetUserInfo(t)
     token.value = t
-    userName.value = userInfo.userName
+    userName.value = info.userName
+    profile.value = info
     loginState.value = true
     localStorage.setItem('token', t)
   }
@@ -20,8 +22,9 @@ export const useUserInfoStore = defineStore('userInfo', () => {
     token.value = ''
     loginState.value = false
     userName.value = ''
+    profile.value = null
     localStorage.removeItem('token')
   }
 
-  return { userName, loginState, token, login, logout }
+  return { userName, loginState, token, profile, login, logout }
 })

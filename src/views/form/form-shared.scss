@@ -1,0 +1,53 @@
+.form-page {
+  padding: 32px;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.page-header { margin-bottom: 28px; }
+
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 8px;
+}
+
+.page-desc { font-size: 14px; color: #8a8fa8; margin: 0; }
+
+.form-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+  max-width: 860px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5a6080;
+  margin-bottom: 20px;
+  padding-left: 10px;
+  border-left: 3px solid #6366f1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f5;
+  margin-top: 8px;
+}
+
+:deep(.el-input__wrapper),
+:deep(.el-textarea__inner) {
+  border-radius: 8px;
+}
+
+:deep(.el-button) {
+  border-radius: 8px;
+  padding: 10px 24px;
+}

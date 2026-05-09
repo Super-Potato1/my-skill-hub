@@ -3,21 +3,42 @@ import type { RouteComponent } from 'vue-router'
 export interface MenuRoute {
   path: string
   name: string
-  component: RouteComponent | (() => Promise<RouteComponent>)
+  component?: RouteComponent | (() => Promise<RouteComponent>)
+  redirect?: string
   meta: {
     title: string
     icon: string
     permission: string
   }
+  children?: MenuRoute[]
 }
 
-// 所有可用的动态路由（需要权限控制）
 export const allAsyncRoutes: MenuRoute[] = [
   {
     path: 'form',
     name: 'form',
-    component: () => import('@/views/form/index.vue'),
+    redirect: '/home/form/simple',
     meta: { title: '表单', icon: '📋', permission: 'form' },
+    children: [
+      {
+        path: 'simple',
+        name: 'form-simple',
+        component: () => import('@/views/form/simple.vue'),
+        meta: { title: '简单表单', icon: '📄', permission: 'form' },
+      },
+      {
+        path: 'complex',
+        name: 'form-complex',
+        component: () => import('@/views/form/complex.vue'),
+        meta: { title: '复杂表单', icon: '📑', permission: 'form' },
+      },
+      {
+        path: 'components',
+        name: 'form-components',
+        component: () => import('@/views/form/components.vue'),
+        meta: { title: '组件展示', icon: '🧩', permission: 'form' },
+      },
+    ],
   },
   {
     path: 'chart',

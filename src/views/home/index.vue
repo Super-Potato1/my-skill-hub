@@ -42,8 +42,12 @@ const onResizeStart = (e: MouseEvent) => {
 }
 
 const currentTitle = computed(() => {
-  const matched = permission.menuList.find((m) => `/home/${m.path}` === route.path)
-  return matched?.meta.title ?? '概览'
+  for (const m of permission.menuList) {
+    if (`/home/${m.path}` === route.path) return m.meta.title
+    const child = m.children?.find((c) => `/home/${m.path}/${c.path}` === route.path)
+    if (child) return child.meta.title
+  }
+  return '概览'
 })
 
 const showLogoutDialog = ref(false)

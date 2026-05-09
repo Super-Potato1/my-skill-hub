@@ -15,6 +15,19 @@ export const usePermissionStore = defineStore('permission', () => {
     return allAsyncRoutes.filter((route) => perms.includes(route.meta.permission))
   }
 
+  const addRouteRecursive = (route: MenuRoute, parentName: string) => {
+    if (!router.hasRoute(route.name)) {
+      router.addRoute(parentName, {
+        path: route.path,
+        name: route.name,
+        component: route.component,
+        redirect: route.redirect,
+        meta: route.meta,
+      })
+    }
+    route.children?.forEach((child) => addRouteRecursive(child, route.name))
+  }
+
   const generateRoutes = async (token: string) => {
     const userInfo = await mockGetUserInfo(token)
     permissions.value = userInfo.permissions
@@ -22,19 +35,12 @@ export const usePermissionStore = defineStore('permission', () => {
     const filtered = filterRoutes(userInfo.permissions)
     accessedRoutes.value = filtered
 
-    // 动态添加路由到 /home 下
-    filtered.forEach((route) => {
-      if (!router.hasRoute(route.name as string)) {
-        router.addRoute('home', route)
-      }
-    })
+    filtered.forEach((route) => addRouteRecursive(route, 'home'))
 
-    // 默认重定向到第一个有权限的菜单
     if (filtered.length > 0) {
-      router.addRoute('home', {
-        path: '',
-        redirect: `/home/${filtered[0]!.path}`,
-      })
+      const first = filtered[0]!
+      const firstPath = first.children ? `/home/${first.path}/${first.children[0]!.path}` : `/home/${first.path}`
+      router.addRoute('home', { path: '', redirect: firstPath })
     }
 
     routesAdded.value = true
